@@ -53,6 +53,7 @@
 			</ul>
 		</div>
 		<alert v-model="shows" :content='msgtip' @on-hide="onHide"></alert>
+		<xfq></xfq>
 	</div>
 </template>
 
@@ -61,6 +62,7 @@
 	import {ApiPost} from '@/api/index';
 	import {Mate} from '@/util/formate';
 	import {mapState} from 'vuex';
+	import xfq from '@/components/xuanfuqiu';
 	export default {
 		name:'dt',
 		data(){
@@ -81,7 +83,8 @@
 			}
 		},
 		components:{
-			alert:r=>require(['@/components/dialog'],r)
+			alert:r=>require(['@/components/dialog'],r),
+			xfq,
 		},
 		directives:{
 			noclick(e){
