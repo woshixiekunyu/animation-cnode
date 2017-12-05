@@ -15,7 +15,6 @@
 		data(){
 			return {
 				transitionName:'slide-left',
-				tabIdx:0,
 				tabList:[
 					{
 						title:'全部',
@@ -36,6 +35,10 @@
 					{
 						title:'精华',
 						id:'good'
+					},
+					{
+						title:'测试',
+						id:'dev'
 					}
 				]
 			}
@@ -49,6 +52,9 @@
 					
 				}
 				return this.$store.state.common.tab
+			},
+			tabIdx(){
+				return this.$store.state.common.tabIdx
 			}
 		},
 		beforeRouteUpdate(to,from,next){
@@ -62,7 +68,7 @@
 		},
 		methods:{
 			tab(id,idx){
-				this.tabIdx = idx;
+				this.$store.commit('gettabIdx',idx)
 				this.$store.commit('getTab',id)
 				this.$router.push({
 					path:id,
@@ -75,7 +81,7 @@
 		mounted(){
 			this.tabList.forEach((item,idx)=>{
 				if(item.id == this.mytab){
-					this.tabIdx = idx
+					this.$store.commit('gettabIdx',idx)
 				}
 			})
 		}

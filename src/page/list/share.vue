@@ -6,7 +6,7 @@
 
 <script>
 	export default {
-		name:'topicLists',
+		name:'share',
 		data(){
 			return {
 				topicList:[],

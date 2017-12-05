@@ -18,6 +18,7 @@ var router = new Router({
 				meta:{
 						title:'cnode社区'
 				}, 
+				redirect:'/home/topic/all',
 				component:r=>require(['@/page/home'],r),
 				children:[
 					{
@@ -41,7 +42,7 @@ var router = new Router({
 								path:'ask',
 								name:'ask',
 								meta:{
-										title:'',
+										title:'问答',
 										idx:1
 								},
 								component:r=>require(['@/page/list/ask'],r),
@@ -50,7 +51,7 @@ var router = new Router({
 								path:'share',
 								name:'share',
 								meta:{
-										title:'',
+										title:'分享',
 										idx:2
 								},
 								component:r=>require(['@/page/list/share'],r),
@@ -59,7 +60,7 @@ var router = new Router({
 								path:'job',
 								name:'job',
 								meta:{
-										title:'',
+										title:'招聘',
 										idx:3
 								},
 								component:r=>require(['@/page/list/job'],r),
@@ -68,11 +69,20 @@ var router = new Router({
 								path:'good',
 								name:'good',
 								meta:{
-										title:'',
+										title:'精华',
 										idx:4
 								},
 								component:r=>require(['@/page/list/good'],r),
 							},
+							{
+								path:'dev',
+								name:'dev',
+								meta:{
+										title:'测试',
+										idx:5
+								},
+								component:r=>require(['@/page/list/dev'],r),
+							}
 						]
 					},
 					{
@@ -89,8 +99,32 @@ var router = new Router({
 						meta:{
 							title:'登录'
 						},
-						component:r=>require(['@/page/login'],r),
-					}
+						component:r=>require(['@/page/leftnav/login'],r),
+					},
+					{
+						path:'mysend',
+						name:'mysend',
+						meta:{
+							title:'发布'
+						},
+						component:r=>require(['@/page/leftnav/mysend'],r),
+					},
+					{
+						path:'personal',
+						name:'personal',
+						meta:{
+							title:'个人中心'
+						},
+						component:r=>require(['@/page/leftnav/personal'],r),
+					},
+					{
+						path:'about',
+						name:'about',
+						meta:{
+							title:'关于'
+						},
+						component:r=>require(['@/page/leftnav/about'],r),
+					},
 				]
 			}
 		]

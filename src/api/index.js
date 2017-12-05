@@ -14,7 +14,10 @@ class ApiConfig {
 		this.api.login={
 			list:{url:'/accesstoken'}
 		};
-	};
+		this.api.pl={
+			list:{url:'/topic/'}
+		};
+	}
 	//请求get
 	getApi(){
 		var vm = this;

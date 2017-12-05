@@ -8,8 +8,9 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-import './assets/scss/index.scss'
+import './assets/scss/index.scss';
 
+import '../static/font/iconfont.js'
 
 /* eslint-disable no-new */
 new Vue({

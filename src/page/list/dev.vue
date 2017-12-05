@@ -6,7 +6,7 @@
 
 <script>
 	export default {
-		name:'all',
+		name:'dev',
 		data(){
 			return {
 				topicList:[],

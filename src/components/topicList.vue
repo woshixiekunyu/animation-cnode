@@ -45,6 +45,8 @@
 			return {
 				showpage:true,
 				topicList:[],
+				isload:true,
+				page:1
 			}
 		},
 		computed:{
@@ -59,11 +61,11 @@
 			}
 		},	
 		methods:{
-			getList(tab){
+			getList(tab,page){
 				var params={
-					page : 1,
+					page : page,
 					tab : tab,
-					limit : 5,
+					limit : 10,
 				}
 				ApiGet.getTopic.list('',params).then(res=>{
 					res.data.data.map(item=>{
@@ -73,6 +75,8 @@
 					})
 					this.topicList = this.topicList.concat(res.data.data)
 					this.$store.commit('getloading',false)
+					this.isload = true;
+					this.page++
 //					this.$store.commit('getshowpage',true)
 				})
 			},
@@ -87,7 +91,24 @@
 			}
 		},
 		mounted(){
-			this.getList(this.tab)
+			var  vm = this
+			this.getList(this.tab,this.page)
+			window.onscroll = function(e){
+//				var clientHeight = document.getElementsByClassName('myanimate').client;
+				//132为列表每一项li的高度
+				var clientHeight = vm.topicList.length*132;
+				
+				console.log(clientHeight)
+				console.log(window.scrollY,clientHeight)
+				console.log(clientHeight-window.scrollY)
+//				console.log(document.getElementsByClassName('myanimate')[0].clientHeight)
+				if(clientHeight-window.scrollY <= 500){
+					if(vm.isload){
+						vm.isload = false
+						vm.getList(vm.tab,vm.page)
+					}
+				}
+			}
 		}
 	}
 </script>

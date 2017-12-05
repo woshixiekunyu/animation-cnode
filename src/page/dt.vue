@@ -30,25 +30,29 @@
 						</div>
 						<div class="discinfo">
 							<p class="discname">{{item.author.loginname}}</p>
-							<p class="time">{{idx}}楼·发表于{{item.create_at}}</p>
-							<p class="disccon" v-html="item.content"></p>
+							<p class="time">{{idx+1}}楼·发表于{{item.create_at}}</p>
+							<p class="disccon" v-html="item.content" ></p>
 						</div>
 					</div>
 					<div class="hfreply">
-						<div class="zan">
+						<div class="zan" @touchstart='setzan(item.id)'>
 							<img src="../../static/zan.png" alt="" />
 						</div>
 						<div class="reply" @touchstart="setpl(idx)">
 							<img src="../../static/reply.png" alt="" />
 						</div>
 					</div>
-					{{item.showinput}}
-					<div v-show="!item.showinput == 0" :class="item.showinput == 0?'input':item.showinput == 1?'input show':'input hide'">
-						<textarea name="textarea"></textarea>
+					<div v-show="!item.showinput == 0" :class="item.showinput == 0?'input':item.showinput == 1?'input show':item.showinput == 2?'input hide':''">
+						<div class="xky">
+							<span @touchstart="nopl(idx)">取消</span>
+							<span @click="sendpl(item.id,idx)">发表</span>
+						</div>
+						<textarea v-model="plcon" name="textarea"></textarea>
 					</div>
 				</li>
 			</ul>
 		</div>
+		<alert v-model="shows" :content='msgtip' @on-hide="onHide"></alert>
 	</div>
 </template>
 
@@ -69,15 +73,28 @@
 				discList:[],
 				collects:'',
 				iscollect:false,
+				lastidx:'',
+				plcon:'',
+				shows:false,
+				msgtip:''
 //				showinput:0
 			}
 		},
+		components:{
+			alert:r=>require(['@/components/dialog'],r)
+		},
+		directives:{
+			noclick(e){
+				console.log(e.children)
+			}
+		},
 		beforeRouteLeave(to,from,next){
+//			console.log(to)
 //			this.$routerisBack = true
+			this.$store.commit('getisbackicon',false);
 			var tj = to.name == 'ask' || to.name == 'all' || to.name == 'share' || to.name == 'job' || to.name == 'good'
 			if(tj){
 //				this.$store.commit('getshowpage',false)
-				this.$store.commit('getisbackicon',false)
 				this.$router.goBack();
 			}
 			next()
@@ -88,6 +105,16 @@
 			})
 		},
 		methods:{
+			onHide(bool){
+				if(this.msgtip == '请登录'){
+					this.shows = bool
+					this.$router.push({
+						name:'login'
+					})
+				}else{
+					this.shows = bool
+				}
+			},
 			collect(bool,id){
 				if(!this.accesstoken){
 					this.$router.push({
@@ -110,9 +137,60 @@
 					this.iscollect = !this.iscollect
 				})
 			},
+			setzan(id){
+				
+			},
 			setpl(idx){
-				this.discList[idx].showinput = 1
-				console.log(idx,this.discList[idx].showinput)
+				console.log(this.lastidx == idx);
+				this.plcon = ''
+				if(this.lastidx === idx){
+					this.discList.map((item,index)=>{
+						if(item.showinput == 1){
+							item.showinput = 2;
+						}
+						this.lastidx = '';
+					})
+					return
+				}
+				this.lastidx = idx
+				this.discList.map((item,index)=>{
+					if(item.showinput == 1){
+						console.log(item.showinput,97865)
+						item.showinput = 2;
+					}
+					if(idx == index){
+						console.log(item.showinput,9786534);
+						item.showinput = 1;
+						this.plcon = '@'+item.author.loginname+' '
+					}
+					return item
+				})
+			},
+			nopl(idx){
+				console.log(idx)
+				this.lastidx = ''
+				this.discList[idx].showinput = 2;
+				this.plcon = ''
+			},
+			sendpl(id,idx){
+				console.log(this.accesstoken)
+				if(!this.accesstoken){
+					this.msgtip = '请登录';
+					
+					this.shows = true
+					return
+				}
+				var params = {
+					accesstoken : this.accesstoken,
+					content : this.plcon,
+					reply_id : id
+				}
+				ApiPost.pl.list(this.detail.id+'/replies',params).then(res=>{
+					console.log(res)
+				}).catch(rej=>{
+					this.msgtip = rej.response.data.error_msg;
+					this.shows = true
+				})
 			}
 		},
 		mounted(){
@@ -125,6 +203,9 @@
 			ApiGet.getTopicdt.list(''+this.pageid,params).then(res=>{
 				console.log(res)
 					res.data.data.last_reply_at = Mate.getNumDate(new Date(res.data.data.last_reply_at));
+					res.data.data.replies.map(item=>{
+						item.showinput = 0;
+					})
 				this.detail = res.data.data;
 				this.autherImg = this.detail.author.avatar_url;
 				this.authername = this.detail.author.loginname;
@@ -150,7 +231,6 @@
 				this.discList = res.data.data.replies;
 				this.discList.map(item=>{
 					item.create_at = Mate.getNumDate(new Date(item.create_at));
-					item.showinput = 0;
 					return item
 				})
 				this.$store.commit('getloading',false);

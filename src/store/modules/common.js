@@ -4,7 +4,9 @@ const comonModule = {
 		myanimate:'left',
 		showpage:false,
 		isbackicon:false,
-		loading:false
+		loading:false,
+		navid:'home',
+		tabIdx:0
 	},
 	mutations:{
 		getTab(state,a){
@@ -20,7 +22,14 @@ const comonModule = {
 			state.isbackicon = a
 		},
 		getloading(state,a){
+			console.log(a)
 			state.loading = a
+		},
+		getnavid(state,a){
+			state.navid = a
+		},
+		gettabIdx(state,a){
+			state.tabIdx = a
 		}
 	}
 }

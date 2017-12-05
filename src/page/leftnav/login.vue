@@ -1,6 +1,6 @@
 <template>
 	<div class="login">
-		<img src="../../static/cnodelogo.svg" alt="" />
+		<img src="../../../static/cnodelogo.svg" alt="" />
 		<form action="#">
 			<input class="token" type="text" v-model="token" placeholder="请输入token"/>
 			<input type="button" class="cmt" @touchstart="cmt" value="登录"/>
@@ -20,6 +20,7 @@
 			}
 		},
 		beforeRouteLeave(to,from,next){
+			this.$store.commit('getisbackicon',false);
 			this.$router.goBack();
 			next()
 		},
@@ -45,7 +46,12 @@
 			}
 		},
 		mounted(){
-			this.$store.commit('getisbackicon',true)
+			if(this.$store.state.common.navid == 'login'){
+				this.$store.commit('getisbackicon',false)
+			}else{
+				this.$store.commit('getisbackicon',true)
+			}
+			
 //			this.$store.commit('getloading',false);
 		},
 		components:{

@@ -1,0 +1,94 @@
+@import '../../../static/font/iconfont.css';
+.leftnav{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: -100%;
+    top: 0;
+    z-index: 60000;
+//  background-color: #444;
+    padding-top: 1.5rem;
+    overflow: hidden;
+//  opacity: 0;
+        .top{
+            float: left;
+            width: 60%;
+            height: 100%;
+            background-color: #444;
+            position: absolute;
+            left: 0;
+            top: 0;
+            text-align: center;
+            padding-top: 1.5rem;
+            &>img{
+                width: 45%;
+                border-radius: 50%;
+            }
+            &>p{
+                font-size: 14px;
+                color: #fff;
+                line-height: 28px;
+            }
+            .personList{
+                width: 100%;
+                ul{
+                    width: 100%;
+                    li{
+                        width: 100%;
+                        color: #fff;
+                        background-color: #444;
+                        font-size: 15px;
+                        height: 2.25rem;
+                        line-height: 2.25rem;
+//                      padding-left: 5px;
+                        box-sizing: border-box;
+                        text-align: left;
+                        position: relative;
+                        &>span{
+                            display: inline-block;
+                            width: 100%;
+                            height: 2.25rem;
+                            color:#fff;
+                            padding-left: 2rem;
+                            box-sizing: border-box;
+                            i{
+                                font-size: 18px;
+//                              display: inline-block;
+//                              width: 20px;
+//                              height: 20px;
+//                              background-image: url(../../../static/chat.png);
+//                              background-repeat: no-repeat;
+//                              vertical-align: middle;
+//                              margin-top: 10px;
+                                float: left;
+                                margin-right: 12px;
+                            }
+//                          z-index: 90000;
+                        }
+                        .active{
+                            background-color: #666;
+                            &:before{
+                                background-color: #80bd01;
+                                content: '';
+                                display: inline-block;
+                                width: 5px;
+                                height: 2.25rem;
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .mymask{
+            width: 40%;
+            height: 100%;
+            position: absolute;
+//          left: 0;
+            right: 0;
+            top: 0;
+            background-color: rgba(0,0,0,.6);
+        }
+}
