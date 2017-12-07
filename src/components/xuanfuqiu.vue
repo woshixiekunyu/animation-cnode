@@ -1,28 +1,76 @@
 <template>
 	<div class="xuanfuqiu">
-		<div :class="writearea?'writeImg shows':'writeImg'" @click="showwrite">
+		<div :class="writearea == 0?'writeImg':writearea == 1?'writeImg shows':'writeImg hides'" @click="showwrite">
 			<img @touchstart="move" @touchend="stop" src="../../static/write.png" alt=""/>
 		</div>
-		<div :class="writearea?'writearea show':'writearea'">
-			<textarea placeholder="请输入评论内容"></textarea>
+		<div :class="writearea == 0?'writearea':writearea == 1?'writearea show':'writearea hide'">
+			<write ref='msgcon' :plcon="plcon" @nopl="nopl" @sendpl="sendpl"></write>
 		</div>
+		<alert v-model="shows" :content="msgtip" @on-hide="onHide"></alert>
 	</div>
 </template>
 
 <script>
+	import {ApiPost} from '@/api/index';
 	export default {
 		name:'xuanfuqiu',
 		data(){
 			return {
 				shows:false,
 				msgtip:'',
-				writearea:0
+				writearea:0,
+				plcon:''
 			}
 		},
-//		props:['url','pageId','openId'],
+		components:{
+			write:r=>require(['@/components/write'],r),
+			alert:r=>require(['@/components/dialog'],r),
+		},
+		props:['accesstoken','topicId'],
 		methods:{
+			onHide(bool){
+				this.shows = bool;
+				if(this.msgtip == '请登录'){
+					this.shows = bool
+					this.$router.push({
+						name:'login'
+					})
+				}else{
+					this.shows = bool
+				}
+			},
+			nopl(){
+				this.writearea = 2;
+				this.plcon = ''
+			},
+			sendpl(){
+				if(!this.accesstoken){
+					this.msgtip = '请登录';
+					this.shows = true
+					return
+				}
+				this.plcon = this.$refs.msgcon.myplcon
+				var params = {
+					accesstoken : this.accesstoken,
+					content : this.plcon,
+				}
+				ApiPost.pl.list(this.topicId+'/replies',params).then(res=>{
+					console.log(res)
+					if(res.data.success){
+						this.writearea = 2;
+						this.plcon = ''
+					}
+				}).catch(rej=>{
+					this.msgtip = rej.response.data.error_msg;
+					this.shows = true
+				})
+			},
 			showwrite(){
-				this.writearea = 1
+				if(this.writearea == 1){
+					this.writearea = 2
+				}else{
+					this.writearea = 1
+				}
 			},
 			move(e){
 //				document.body.style.overflowY = 'hidden';
@@ -103,6 +151,8 @@
 		.hides{
 			animation: movedownimg .3s linear forwards;
 		}
+		/*移动输入框*/
+		/*上移*/
 		@-moz-keyframes showwrite{
 			from{
 				height: 0;
@@ -135,12 +185,29 @@
 				height: 5rem;
 			}
 		}
-		@keyframes moveupimg{
+		/*下移*/
+		@-moz-keyframes hidewrite{
 			from{
-				bottom: 0;
+				height: 5rem;
 			}
 			to{
-				bottom: 5rem;
+				height: 0;
+			}
+		}
+		@-ms-keyframes hidewrite{
+			from{
+				height: 5rem;
+			}
+			to{
+				height: 0;
+			}
+		}
+		@-webkit-keyframes hidewrite{
+			from{
+				height: 5rem;
+			}
+			to{
+				height: 0;
 			}
 		}
 		@keyframes hidewrite{
@@ -149,6 +216,65 @@
 			}
 			to{
 				height: 0;
+			}
+		}
+		/*移动编辑按钮*/
+		/*上移*/
+		@-moz-keyframes moveupimg{
+			from{
+				bottom: 0;
+			}
+			to{
+				bottom: 5rem;
+			}
+		}
+		@-ms-keyframes moveupimg{
+			from{
+				bottom: 0;
+			}
+			to{
+				bottom: 5rem;
+			}
+		}
+		@-webkit-keyframes moveupimg{
+			from{
+				bottom: 0;
+			}
+			to{
+				bottom: 5rem;
+			}
+		}
+		@keyframes moveupimg{
+			from{
+				bottom: 0;
+			}
+			to{
+				bottom: 5rem;
+			}
+		}
+		/*下移*/
+		@-moz-keyframes movedownimg{
+			from{
+				bottom: 5rem;
+			}
+			to{
+				bottom: 0;
+			}
+		}
+		@-moz-keyframes movedownimg{
+			from{
+				bottom: 5rem;
+			}
+			to{
+				bottom: 0;
+			}
+		}
+		@-webkit-keyframes movedownimg{
+			from{
+				bottom: 5rem;
+			}
+			to{
+				bottom: 0;
 			}
 		}
 		@keyframes movedownimg{

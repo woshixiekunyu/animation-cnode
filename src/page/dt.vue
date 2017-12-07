@@ -35,25 +35,21 @@
 						</div>
 					</div>
 					<div class="hfreply">
-						<div class="zan" @touchstart='setzan(item.id)'>
-							<img src="../../static/zan.png" alt="" />
+						<div class="zan" @touchstart='setzan(idx,item.id)'>
+							<img :src="item.is_uped?'../../static/iszan.png':'../../static/zan.png'" alt="" />
 						</div>
 						<div class="reply" @touchstart="setpl(idx)">
 							<img src="../../static/reply.png" alt="" />
 						</div>
 					</div>
 					<div v-show="!item.showinput == 0" :class="item.showinput == 0?'input':item.showinput == 1?'input show':item.showinput == 2?'input hide':''">
-						<div class="xky">
-							<span @touchstart="nopl(idx)">取消</span>
-							<span @click="sendpl(item.id,idx)">发表</span>
-						</div>
-						<textarea v-model="plcon" name="textarea"></textarea>
+						<write ref='msgcon' :plcon="plcon" @nopl="nopl(idx)" @sendpl="sendpl(item.id,idx)"></write>
 					</div>
 				</li>
 			</ul>
 		</div>
 		<alert v-model="shows" :content='msgtip' @on-hide="onHide"></alert>
-		<xfq></xfq>
+		<xfq :accesstoken="accesstoken" :topicId="detail.id"></xfq>
 	</div>
 </template>
 
@@ -62,7 +58,6 @@
 	import {ApiPost} from '@/api/index';
 	import {Mate} from '@/util/formate';
 	import {mapState} from 'vuex';
-	import xfq from '@/components/xuanfuqiu';
 	export default {
 		name:'dt',
 		data(){
@@ -84,7 +79,8 @@
 		},
 		components:{
 			alert:r=>require(['@/components/dialog'],r),
-			xfq,
+			xfq:r=>require(['@/components/xuanfuqiu'],r),
+			write:r=>require(['@/components/write'],r),
 		},
 		directives:{
 			noclick(e){
@@ -140,8 +136,24 @@
 					this.iscollect = !this.iscollect
 				})
 			},
-			setzan(id){
-				
+			setzan(idx,id){
+				if(!this.accesstoken){
+					this.msgtip = '请登录';
+					
+					this.shows = true
+					return
+				}
+				var params = {
+					accesstoken : this.accesstoken
+				}
+				ApiPost.zan.list(id+'/ups',params).then(res=>{
+					this.discList[idx].is_uped = !this.discList[idx].is_uped
+					this.msgtip = '点赞成功';
+					this.shows = true
+				}).catch(rej=>{
+					this.msgtip = rej.response.data.error_msg;
+					this.shows = true
+				})
 			},
 			setpl(idx){
 				console.log(this.lastidx == idx);
@@ -164,7 +176,7 @@
 					if(idx == index){
 						console.log(item.showinput,9786534);
 						item.showinput = 1;
-						this.plcon = '@'+item.author.loginname+' '
+						this.$refs.msgcon[idx].myplcon = '@'+item.author.loginname+' ';
 					}
 					return item
 				})
@@ -173,23 +185,24 @@
 				console.log(idx)
 				this.lastidx = ''
 				this.discList[idx].showinput = 2;
-				this.plcon = ''
+//				this.plcon = ''
 			},
 			sendpl(id,idx){
-				console.log(this.accesstoken)
 				if(!this.accesstoken){
 					this.msgtip = '请登录';
 					
 					this.shows = true
 					return
 				}
+				this.plcon = this.$refs.msgcon[idx].myplcon
 				var params = {
 					accesstoken : this.accesstoken,
 					content : this.plcon,
 					reply_id : id
 				}
 				ApiPost.pl.list(this.detail.id+'/replies',params).then(res=>{
-					console.log(res)
+					this.discList[idx].showinput = 2;
+					this.plcon = ''
 				}).catch(rej=>{
 					this.msgtip = rej.response.data.error_msg;
 					this.shows = true

@@ -62,6 +62,19 @@
 		},	
 		methods:{
 			getList(tab,page){
+//				if(topiclist){
+//					var position = sessionStorage.getItem('position');
+//					var topiclist = sessionStorage.getItem('topiclist');
+//					var pages = sessionStorage.getItem('page');
+//					this.topicList = JSON.parse(topiclist);
+//					window.scrollTo(0,position);
+//					console.log(222)
+//					sessionStorage.removeItem('position');
+//					sessionStorage.removeItem('topiclist');
+//					this.page = pages;
+//					page = pages;
+//					return
+//				}
 				var params={
 					page : page,
 					tab : tab,
@@ -81,6 +94,9 @@
 				})
 			},
 			todt(id){
+//				sessionStorage.setItem('position',document.body.scrollTop || document.documentElement.scrollTop)
+//				sessionStorage.setItem('topiclist',JSON.stringify(this.topicList))
+//				sessionStorage.setItem('page',this.page)
 				this.$store.commit('getisbackicon',true)
 				this.$router.push({
 					name:'dt',
@@ -98,9 +114,6 @@
 				//132为列表每一项li的高度
 				var clientHeight = vm.topicList.length*132;
 				
-				console.log(clientHeight)
-				console.log(window.scrollY,clientHeight)
-				console.log(clientHeight-window.scrollY)
 //				console.log(document.getElementsByClassName('myanimate')[0].clientHeight)
 				if(clientHeight-window.scrollY <= 500){
 					if(vm.isload){

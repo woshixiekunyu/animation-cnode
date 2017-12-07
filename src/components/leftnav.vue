@@ -25,6 +25,7 @@
 		name:'laftnav',
 		data(){
 			return {
+				islogin:true,
 				personList:[
 					{
 						title: '首页',
@@ -51,7 +52,7 @@
 						id: 'login',
 						classname:'iconfont icon-login'
 					},
-				]
+				],
 			}
 		},
 		computed:{
@@ -61,8 +62,24 @@
 			navid(){
 				return this.$store.state.common.navid
 			},
+			accesstoken(){
+				return this.$store.state.user.accesstoken
+			}
 		},
-		
+		watch:{
+			accesstoken(val){
+				if(val){
+					this.personList.map((item,idx)=>{
+						if(idx == this.personList.length-1){
+							console.log(idx)
+							item.title = '退出'
+							item.id = 'loginout'
+						}
+						return item
+					})
+				}
+			}
+		},
 		methods:{
 			hidenav(){
 				this.$emit('hidenav',false)
@@ -70,32 +87,73 @@
 			getId(idx,id){
 				this.$store.commit('getloading',false)
 				this.hidenav();
-				if(sessionStorage.getItem('accesstoken') && id!='login' || id=="home"){
-					console.log(id)
-					if(this.tab == 'all' && this.navid == 'home'){
-						return
+				if(sessionStorage.getItem('accesstoken')){
+					if(id!='loginout'){
+						if(this.tab == 'all' && this.navid == 'home' && id=="home"){
+							return
+						}
+						this.$store.commit('getnavid',id)
+						this.$store.commit('getTab','all')
+						this.$store.commit('gettabIdx',0);
+						this.$router.push({
+							name:id,
+							query:{
+								tab:idx==0?'all':''
+							}
+						})
+					}else{
+						this.personList.map((item,idx)=>{
+							if(idx == this.personList.length-1){
+								item.title = '登录';
+								item.id = 'login';
+								sessionStorage.clear('accesstoken')
+								this.$store.commit('getlogin','')
+							}
+							return item
+						})
+//						this.$store.commit('getnavid','home')
+//						console.log(this.$store.state.common.navid)
+//						this.$store.commit('getTab','all')
+//						this.$store.commit('gettabIdx',0);
+						if(typeof this.$route.meta.idx != 'number'){
+							console.log(this.$route)
+							this.$router.push({
+								name:'all',
+								query:{
+									tab:'all'
+								}
+							})
+						}
 					}
-					this.$store.commit('getnavid',id)
-					this.$store.commit('getTab','all')
-					this.$store.commit('gettabIdx',0);
-					this.$router.push({
-						name:id,
-						query:{
-							tab:idx==0?'all':''
-						}
-					})
 				}else{
-					this.$router.push({
-						name:id,
-						query:{
-							tab:idx==0?'all':''
+					if(id=='home'){
+						if(this.navid == 'home'){
+							return
+						}else{
+							this.$router.push({
+								name:'all'
+							})
 						}
-					})
-//					this.$router.push({
-//						name:'login'
-//					})
+					}else if(id=='about'){
+						this.$router.push({
+							name:'about'
+						})
+					}else{
+						this.$router.push({
+							name:'login'
+						})
+					}
 				}
 			}
+		},
+		mounted(){
+			this.personList.map((item,idx)=>{
+				if(idx == this.personList.length-1 && sessionStorage.getItem('accesstoken')){
+					item.title = '退出'
+					item.id = 'loginout'
+				}
+				return item
+			})
 		}
 	}
 </script>

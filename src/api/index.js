@@ -17,6 +17,9 @@ class ApiConfig {
 		this.api.pl={
 			list:{url:'/topic/'}
 		};
+		this.api.zan={
+			list:{url:'/reply/'}
+		};
 	}
 	//请求get
 	getApi(){

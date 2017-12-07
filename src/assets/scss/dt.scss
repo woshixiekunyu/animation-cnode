@@ -205,38 +205,6 @@
                 .input{
                     padding: 0.75rem;
                     overflow: hidden;
-                    .xky{
-                        width: 100%;
-                        line-height: 1.5rem;
-                        height: 1.5rem;
-                        span{
-                            display: inline-block;
-                            width: 3rem;
-                            height: 1.2rem;
-                            line-height: 1.2rem;
-                            font-size: 16px;
-                            text-align: center;
-                            float: left;
-                            background-color: #80bd01;
-                            color: #fff;
-                            border-radius: 5px;
-                            margin-left: 10px;
-                            &:last-child{
-                                float: right;
-                                margin-left: 0;
-                                margin-right: 10px;
-                            }
-                        }
-                    }
-                    textarea{
-//                      animation: show .5s;
-                        width: 100%;
-//                      height: 0;
-                        height: 3.5rem;
-                        resize:none;
-                        border-radius: 3px;
-                        box-sizing: border-box;
-                    }
                 }
             }
         }
