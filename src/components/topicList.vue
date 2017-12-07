@@ -108,6 +108,7 @@
 		},
 		mounted(){
 			var  vm = this
+			this.$store.commit('getisbackicon',false);
 			this.getList(this.tab,this.page)
 			window.onscroll = function(e){
 //				var clientHeight = document.getElementsByClassName('myanimate').client;

@@ -125,12 +125,58 @@ var router = new Router({
 						},
 						component:r=>require(['@/page/leftnav/about'],r),
 					},
+					{
+						path:'mymessage',
+						name:'mymessage',
+						meta:{
+							title:'我的消息'
+						},
+						component:r=>require(['@/page/person/message'],r),
+					},
+					{
+						path:'mytopic',
+						name:'mytopic',
+						meta:{
+							title:'我的主题'
+						},
+						component:r=>require(['@/page/person/mytopic'],r),
+					},
+					{
+						path:'mypl',
+						name:'mypl',
+						meta:{
+							title:'我的评论'
+						},
+						component:r=>require(['@/page/person/mypl'],r),
+					},
+					{
+						path:'mycollect',
+						name:'mycollect',
+						meta:{
+							title:'我的收藏'
+						},
+						component:r=>require(['@/page/person/mycollect'],r),
+					},
+					
 				]
 			}
 		]
 })
 router.beforeEach((to,from,next)=>{
 	window.document.title = to.meta.title;
+	if(!sessionStorage.getItem('accesstoken') || !sessionStorage.getItem('userInfo')){
+		sessionStorage.removeItem('accesstoken')
+		sessionStorage.removeItem('userInfo');
+		console.log(store.state.common)
+//		store.state.common.personList.map((item,idx)=>{
+//			if(idx == store.state.common.personList.length-1){
+//				item.title = '登录';
+//				item.id = 'login';
+				store.commit('getlogin','')
+//			}
+//			return item
+//		})
+	}
 	store.state.user.accesstoken
 	?next()
 	:store.dispatch('login').then(res=>{

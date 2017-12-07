@@ -80,6 +80,8 @@
 				this.$store.commit('getloading',false)
 			}else if(to.name == 'mysend'){
 				this.$store.commit('getloading',false)
+			}else if(to.name == 'about'){
+				this.$store.commit('getloading',false)
 			}else{
 				this.$store.commit('getloading',true)
 			}

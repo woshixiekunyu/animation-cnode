@@ -10,6 +10,7 @@ const comonModule = {
 	},
 	mutations:{
 		getTab(state,a){
+			console.log(a,3456879)
 			state.tab = a;
 		},
 		getmyanimate(state,a){

@@ -20,6 +20,9 @@ class ApiConfig {
 		this.api.zan={
 			list:{url:'/reply/'}
 		};
+		this.api.userInfo={
+			list:{url:'/user/'}
+		};
 	}
 	//请求get
 	getApi(){

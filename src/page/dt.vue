@@ -148,8 +148,12 @@
 				}
 				ApiPost.zan.list(id+'/ups',params).then(res=>{
 					this.discList[idx].is_uped = !this.discList[idx].is_uped
-					this.msgtip = '点赞成功';
-					this.shows = true
+					console.log(this.discList[idx].is_uped,978564)
+					if(this.discList[idx].is_uped){
+						this.msgtip = '点赞成功';
+						this.shows = true
+					}
+					
 				}).catch(rej=>{
 					this.msgtip = rej.response.data.error_msg;
 					this.shows = true

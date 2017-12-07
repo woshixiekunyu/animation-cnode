@@ -9,9 +9,10 @@
 				<label for="topictype"><i class="grren iconfont icon-fenlei"></i><span>分类</span></label>
 				<select id="topictype" v-model="topictype">
 					<option value="请选择">请选择</option>
-					<option value="分享">分享</option>
-					<option value="问答">问答</option>
-					<option value="招聘">招聘</option>
+					<option value="share">分享</option>
+					<option value="ask">问答</option>
+					<option value="job">招聘</option>
+					<option value="dev">测试</option>
 				</select>
 			</p>
 			<p>
@@ -32,7 +33,7 @@
 		data(){
 			return {
 				topictitle:'',
-				topictype:'',
+				topictype:'请选择',
 				topiccon:'',
 				shows:false,
 				msgtip:''
@@ -70,6 +71,9 @@
 						this.msgtip = '提交成功';
 						this.shows = true
 					}
+				}).catch(err=>{
+					this.msgtip = err.response.data.error_msg
+					this.shows = true
 				})
 				console.log(this.topictitle,this.topictype,this.topiccon)
 			}

@@ -1,12 +1,15 @@
-//import {ApiPost} from '@/api/index';
+import {ApiPost} from '@/api/index';
 const userModule = {
 	state:{
-		accesstoken:''
+		accesstoken:'',
+		userInfo:{}
 	},
 	mutations:{
 		getlogin(state,a){
-			console.log(a)
 			state.accesstoken = a
+		},
+		getuserInfo(state,a){
+			state.userInfo = a
 		}
 	},
 	actions:{
@@ -14,6 +17,7 @@ const userModule = {
 //			ApiPost.login.list('',)
 			new Promise((res,rej)=>{
 				commit('getlogin',sessionStorage.accesstoken)
+				commit('getuserInfo',sessionStorage.userInfo?JSON.parse(sessionStorage.userInfo):sessionStorage.userInfo)
 				res(sessionStorage.accesstoken)
 			})
 		}

@@ -36,7 +36,9 @@
 					console.log(res)
 					if(res.data.id){
 						sessionStorage.setItem('accesstoken', this.token)
+						sessionStorage.setItem('userInfo', JSON.stringify(res.data))
 						this.$store.commit('getlogin',this.token)
+						this.$store.commit('getuserInfo',res.data)
 						history.go(-1)
 					}
 				}).catch(err=>{

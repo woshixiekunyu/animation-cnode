@@ -68,16 +68,15 @@
 		},
 		watch:{
 			accesstoken(val){
-				if(val){
-					this.personList.map((item,idx)=>{
-						if(idx == this.personList.length-1){
-							console.log(idx)
-							item.title = '退出'
-							item.id = 'loginout'
-						}
-						return item
-					})
-				}
+				console.log(val,'xky')
+				this.personList.map((item,idx)=>{
+					if(idx == this.personList.length-1){
+						console.log(idx)
+						item.title = val?'退出':'登录'
+						item.id = val?'loginout':'login'
+					}
+					return item
+				})
 			}
 		},
 		methods:{
@@ -92,9 +91,14 @@
 						if(this.tab == 'all' && this.navid == 'home' && id=="home"){
 							return
 						}
+						console.log(this.$route.meta.idx)
+						if(this.$route.meta.idx==undefined){
+							console.log(1,8)
+							this.$store.commit('getTab','all')
+							this.$store.commit('gettabIdx',0);
+						}
 						this.$store.commit('getnavid',id)
-						this.$store.commit('getTab','all')
-						this.$store.commit('gettabIdx',0);
+//						
 						this.$router.push({
 							name:id,
 							query:{
@@ -106,7 +110,7 @@
 							if(idx == this.personList.length-1){
 								item.title = '登录';
 								item.id = 'login';
-								sessionStorage.clear('accesstoken')
+								sessionStorage.removeItem('accesstoken')
 								this.$store.commit('getlogin','')
 							}
 							return item
@@ -115,7 +119,8 @@
 //						console.log(this.$store.state.common.navid)
 //						this.$store.commit('getTab','all')
 //						this.$store.commit('gettabIdx',0);
-						if(typeof this.$route.meta.idx != 'number'){
+//						if(typeof this.$route.meta.idx != 'number'){
+						if(this.$route.name == 'personal'){
 							console.log(this.$route)
 							this.$router.push({
 								name:'all',
@@ -126,6 +131,7 @@
 						}
 					}
 				}else{
+					console
 					if(id=='home'){
 						if(this.navid == 'home'){
 							return
@@ -134,13 +140,13 @@
 								name:'all'
 							})
 						}
-					}else if(id=='about'){
+					}else if(id=='personal'){
 						this.$router.push({
-							name:'about'
+							name:'login'
 						})
 					}else{
 						this.$router.push({
-							name:'login'
+							name:id,
 						})
 					}
 				}
