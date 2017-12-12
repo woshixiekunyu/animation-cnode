@@ -1,5 +1,5 @@
 <template>
-	<div class="xuanfuqiu">
+	<div class="xuanfuqiu" v-show="showPage">
 		<div :class="writearea == 0?'writeImg':writearea == 1?'writeImg shows':'writeImg hides'" @click="showwrite">
 			<img @touchstart="move" @touchend="stop" src="../../static/write.png" alt=""/>
 		</div>
@@ -26,7 +26,7 @@
 			write:r=>require(['@/components/write'],r),
 			alert:r=>require(['@/components/dialog'],r),
 		},
-		props:['accesstoken','topicId'],
+		props:['accesstoken','topicId','showPage'],
 		methods:{
 			onHide(bool){
 				this.shows = bool;

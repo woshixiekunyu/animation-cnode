@@ -1,5 +1,5 @@
 <template>
-	<div class="topicList">
+	<div>
 		<topic-list></topic-list>
 	</div>
 </template>

@@ -5,6 +5,7 @@
 			<header :class="toright==0?'homepage':toright==1?'homepage torights':'homepage tolefts'">
 				<i :class="isbackicon?'back':'more'" @click="cz(isbackicon)"></i>
 				<img src="../../static/cnodelogo.svg" alt="" />
+				<!--<span @click="sss">1111</span>-->
 			</header>
 			<loading :loading="loading"></loading>
 			<transition :name="transitionName">
@@ -39,7 +40,15 @@
 				return this.$store.state.common.loading
 			}
 		},
+		mounted(){
+			socket.on('xky', data => {
+		      console.log(data);
+		    });
+		},
 		methods:{
+			sss(){
+				socket.emit('xky', 'sss')
+			},
 			cz(bool){
 				if(bool){
 					this.$store.commit('getisbackicon',false);

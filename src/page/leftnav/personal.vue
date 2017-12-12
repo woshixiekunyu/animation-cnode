@@ -1,6 +1,6 @@
 <template>
 	<div class="personalInfo">
-		<user-info :accesstoken="accesstoken" :userInfo="userInfo"></user-info>
+		<user-info :accesstoken="accesstoken" :userInfo="myuserInfo"></user-info>
 		<div class="persontab">
 			<ul>
 				<li class="clearfix" v-for="(item,idx) in persontab" @click="chooseTab(item.id,idx)">
@@ -15,6 +15,8 @@
 
 <script>
 	import userInfo from '@/components/userInfo'
+	import {ApiGet} from '@/api/index';
+	import {Mate} from '@/util/formate';
 	export default {
 		name:'personalInfo',
 		data(){
@@ -40,7 +42,8 @@
 						id:'mycollect',
 						classname:'iconfont icon-shoucang'
 					}
-				]
+				],
+				myuserInfo:{}
 			}
 		},
 		methods:{
@@ -63,8 +66,22 @@
 			}
 		},
 		mounted(){
+			if(!sessionStorage.getItem('accesstoken')){
+				this.$router.push({
+					name:'all'
+				})
+			}
 			this.$store.commit('getisbackicon',true);
 			this.$store.commit('getloading',false)
+			var params = {
+				accesstoken : this.accesstoken
+			}
+			ApiGet.userInfo.list(''+this.userInfo.loginname,params).then(res=>{
+//				this.messageList = res.data.data;
+					res.data.data.create_at = Mate.getNumDate(new Date(res.data.data.create_at));
+				this.myuserInfo = res.data.data;
+				console.log(this.myuserInfo)
+			})
 		}
 	}
 </script>

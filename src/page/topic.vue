@@ -66,8 +66,17 @@
 			}
 			next()
 		},
+		socket:{
+			connect: function(){
+		    	console.log('socket connected')
+		    },
+		    customEmit: function(val){
+		    	console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+		    }
+		},
 		methods:{
 			tab(id,idx){
+				 socket.emit('emit_method', '新开业');
 				this.$store.commit('gettabIdx',idx)
 				this.$store.commit('getTab',id)
 				this.$router.push({
@@ -79,6 +88,9 @@
 			}
 		},
 		mounted(){
+			socket.on('emit_method',res=>{
+				alert(res)
+			})
 			this.tabList.forEach((item,idx)=>{
 				if(item.id == this.mytab){
 					this.$store.commit('gettabIdx',idx)

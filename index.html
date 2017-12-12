@@ -4,10 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1,target-densitydpi=device-dpi ">
     <title>testcli</title>
+    <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico">
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+	
+        <script>
+          const socket = io.connect('http://localhost:44144/');
+        </script>
+        <!--<script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?ce268e8f61069a1636a4629acbb82b9a";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>-->
   </body>
   <script>
   	(function (doc, win) {

@@ -2,7 +2,7 @@ import {ApiPost} from '@/api/index';
 const userModule = {
 	state:{
 		accesstoken:'',
-		userInfo:{}
+		userInfo:{},
 	},
 	mutations:{
 		getlogin(state,a){
@@ -10,7 +10,7 @@ const userModule = {
 		},
 		getuserInfo(state,a){
 			state.userInfo = a
-		}
+		},
 	},
 	actions:{
 		login({commit}){

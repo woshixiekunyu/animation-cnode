@@ -47,9 +47,10 @@
 					</div>
 				</li>
 			</ul>
+			<p v-if="isnopl">暂时无人评论,快来评论吧</p>
 		</div>
 		<alert v-model="shows" :content='msgtip' @on-hide="onHide"></alert>
-		<xfq :accesstoken="accesstoken" :topicId="detail.id"></xfq>
+		<xfq :showPage="showPage" :accesstoken="accesstoken" :topicId="detail.id"></xfq>
 	</div>
 </template>
 
@@ -63,7 +64,7 @@
 		data(){
 			return {
 				pageid:'',
-				detail:[],
+				detail:{},
 				autherImg:'',
 				authername:'',
 				artitab:'',
@@ -73,7 +74,9 @@
 				lastidx:'',
 				plcon:'',
 				shows:false,
-				msgtip:''
+				msgtip:'',
+				isnopl:false,
+				showPage:false
 //				showinput:0
 			}
 		},
@@ -253,7 +256,13 @@
 					item.create_at = Mate.getNumDate(new Date(item.create_at));
 					return item
 				})
+				if(this.discList.length == 0){
+					this.isnopl = true
+				}
 				this.$store.commit('getloading',false);
+				setTimeout(()=>{
+					this.showPage = true
+				},1000)
 //				this.showinput = 1
 			})
 		}

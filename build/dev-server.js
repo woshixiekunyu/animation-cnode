@@ -10,9 +10,8 @@ var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = (process.env.NODE_ENV === 'testing' || process.env.NODE_ENV === 'production')
-  ? require('./webpack.prod.conf')
-  : require('./webpack.dev.conf')
+var webpackConfig = require('./webpack.dev.conf')
+
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -22,7 +21,43 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
-var app = express()
+var app = express();
+
+const server = require('http').Server(app);
+
+const io = require('socket.io')(server);
+
+const http = require('http');
+
+const https = require('https');
+
+var bodyParser = require('body-parser');
+// var multer = require('multer');
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// app.use(multer()); // for parsing multipart/form-data
+
+io.on('connection', (socket) => {
+
+
+  // 群聊
+  socket.on('sendGroupMsg', function (data) {
+    socket.broadcast.emit('receiveGroupMsg', data);
+  });
+
+  // 上线
+  socket.on('online', name => {
+    socket.broadcast.emit('online', name)
+  });
+
+	// test
+  socket.on('xky', name => {
+    socket.broadcast.emit('xky', name)
+  });
+})
+
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
@@ -31,8 +66,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: false,
-  heartbeat: 2000
+  log: () => {}
 })
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
@@ -61,6 +95,8 @@ app.use(devMiddleware)
 // compilation error display
 app.use(hotMiddleware)
 
+
+
 // serve pure static assets
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
@@ -82,7 +118,9 @@ devMiddleware.waitUntilValid(() => {
   _resolve()
 })
 
-var server = app.listen(port)
+// var server = app.listen(port)
+
+server.listen(44144);
 
 module.exports = {
   ready: readyPromise,

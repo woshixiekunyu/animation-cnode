@@ -23,6 +23,12 @@ class ApiConfig {
 		this.api.userInfo={
 			list:{url:'/user/'}
 		};
+		this.api.readmes={
+			list:{url:'/messages/'}
+		};
+		this.api.noreadmes={
+			list:{url:'/message/count/'}
+		};
 	}
 	//请求get
 	getApi(){
