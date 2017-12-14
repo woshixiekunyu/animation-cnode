@@ -54,7 +54,8 @@
 			var params = {
 				accesstoken : this.accesstoken
 			}
-			ApiGet.userInfo.list(''+this.userInfo.loginname,params).then(res=>{
+			var username = this.$route.query.loginname?this.$route.query.loginname:this.userInfo.loginname
+			ApiGet.userInfo.list(''+username,params).then(res=>{
 				res.data.data.recent_replies.map(item=>{
 					item.last_reply_at = Mate.getNumDate(new Date(item.last_reply_at));
 				})

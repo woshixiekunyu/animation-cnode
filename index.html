@@ -12,7 +12,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 	
         <script>
-          const socket = io.connect('http://localhost:44144/');
+          const socket = io.connect('http://192.168.1.138:52061', {
+			   "transports": ['websocket']
+			});
         </script>
         <!--<script>
         var _hmt = _hmt || [];

@@ -4,14 +4,14 @@ Vue.use(Vuex);
 
 import common from './modules/common';
 //import List from './modules/List';
-//import auth from './modules/auth';
+import chat from './modules/chat';
 import mutation from './mutations';
 import user from './modules/user';
 const store = new Vuex.Store({
 	modules: {
 	    common,
 	    user,
-//	    auth,
+	    chat,
 	},
 	mutation,
 	strict: process.env.NODE_ENV !== 'production'
@@ -21,7 +21,7 @@ if (module.hot) {
 // 使 actions 和 mutations 成为可热重载模块
 module.hot.accept([
     './modules/common', 
-//  './modules/List', 
+    './modules/chat', 
     './modules/user', 
     ], () => {
     // 获取更新后的模块 
@@ -30,7 +30,7 @@ module.hot.accept([
     store.hotUpdate({
       modules: {
         common: require('./modules/common').default,
-//      List:require('./modules/List').default,
+        chat:require('./modules/chat').default,
         user:require('./modules/user').default,
       }
     })

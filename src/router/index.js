@@ -126,6 +126,22 @@ var router = new Router({
 						component:r=>require(['@/page/leftnav/about'],r),
 					},
 					{
+						path:'chat',
+						name:'chat',
+						meta:{
+							title:'聊天室'
+						},
+						component:r=>require(['@/page/leftnav/chat'],r),
+					},
+					{
+						path:'chatmore',
+						name:'chatmore',
+						meta:{
+							title:'聊天室'
+						},
+						component:r=>require(['@/page/leftnav/child/chatmore'],r),
+					},
+					{
 						path:'mymessage',
 						name:'mymessage',
 						meta:{

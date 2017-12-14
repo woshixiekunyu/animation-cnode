@@ -10,7 +10,7 @@ const comonModule = {
 	},
 	mutations:{
 		getTab(state,a){
-			console.log(a,3456879)
+			//console.log(a,3456879)
 			state.tab = a;
 		},
 		getmyanimate(state,a){
@@ -23,7 +23,7 @@ const comonModule = {
 			state.isbackicon = a
 		},
 		getloading(state,a){
-			console.log(a)
+			//console.log(a)
 			state.loading = a
 		},
 		getnavid(state,a){

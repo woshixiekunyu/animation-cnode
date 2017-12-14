@@ -18,6 +18,7 @@
     "body-parser": "^1.18.2",
     "http": "0.0.0",
     "https": "^1.0.0",
+    "moment": "^2.19.4",
     "socket.io": "^2.0.4",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0",

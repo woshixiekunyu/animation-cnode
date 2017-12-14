@@ -43,6 +43,7 @@
 				return this.$store.state.user.accesstoken
 			},
 			userInfo(){
+				console.log(this.$store.state.user.userInfo)
 				return this.$store.state.user.userInfo?this.$store.state.user.userInfo:{}
 			}
 		},

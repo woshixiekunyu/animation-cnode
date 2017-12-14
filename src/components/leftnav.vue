@@ -6,7 +6,6 @@
 			<div class="personList">
 				<ul>
 					<li v-for="(item,idx) in personList" @click="getId(idx,item.id)">
-						
 						<span href="javascript:;" :class="{active:navid==item.id}">
 							<i :class="item.classname"></i>
 							<span>{{item.title}}</span>							
@@ -48,6 +47,11 @@
 						classname:'iconfont icon-about'
 					},
 					{
+						title: '聊天室',
+						id: 'chat',
+						classname:'iconfont icon-about'
+					},
+					{
 						title: '登录',
 						id: 'login',
 						classname:'iconfont icon-login'
@@ -64,14 +68,17 @@
 			},
 			accesstoken(){
 				return this.$store.state.user.accesstoken
+			},
+			userInfo(){
+				return this.$store.state.user.userInfo?this.$store.state.user.userInfo:{}
 			}
 		},
 		watch:{
 			accesstoken(val){
-				console.log(val,'xky')
+				//console.log(val,'xky')
 				this.personList.map((item,idx)=>{
 					if(idx == this.personList.length-1){
-						console.log(idx)
+						//console.log(idx)
 						item.title = val?'退出':'登录'
 						item.id = val?'loginout':'login'
 					}
@@ -91,18 +98,19 @@
 						if(this.tab == 'all' && this.navid == 'home' && id=="home"){
 							return
 						}
-						console.log(this.$route.meta.idx)
+						//console.log(this.$route.meta.idx)
 						if(this.$route.meta.idx==undefined){
-							console.log(1,8)
+							//console.log(1,8)
 							this.$store.commit('getTab','all')
 							this.$store.commit('gettabIdx',0);
 						}
 						this.$store.commit('getnavid',id)
-//						
+						//console.log(this.navid)
 						this.$router.push({
 							name:id,
 							query:{
-								tab:idx==0?'all':''
+								tab:idx==0?'all':'',
+								loginname:id=='personal'?this.userInfo.loginname:''
 							}
 						})
 					}else{
@@ -116,12 +124,12 @@
 							return item
 						})
 //						this.$store.commit('getnavid','home')
-//						console.log(this.$store.state.common.navid)
+//						//console.log(this.$store.state.common.navid)
 //						this.$store.commit('getTab','all')
 //						this.$store.commit('gettabIdx',0);
 //						if(typeof this.$route.meta.idx != 'number'){
 						if(this.$route.name == 'personal'){
-							console.log(this.$route)
+							//console.log(this.$route)
 							this.$router.push({
 								name:'all',
 								query:{
@@ -131,7 +139,7 @@
 						}
 					}
 				}else{
-					console
+					//console
 					if(id=='home'){
 						if(this.navid == 'home'){
 							return
@@ -141,6 +149,10 @@
 							})
 						}
 					}else if(id=='personal'){
+						this.$router.push({
+							name:'login'
+						})
+					}else if(id=='chat'){
 						this.$router.push({
 							name:'login'
 						})

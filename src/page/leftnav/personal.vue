@@ -50,7 +50,10 @@
 			chooseTab(id,idx){
 				this.$store.commit('getisbackicon',true);
 				this.$router.push({
-					name:id
+					name:id,
+					query:{
+						loginname : this.$route.query.loginname
+					}
 				})
 			}
 		},
@@ -76,7 +79,8 @@
 			var params = {
 				accesstoken : this.accesstoken
 			}
-			ApiGet.userInfo.list(''+this.userInfo.loginname,params).then(res=>{
+			var username = this.$route.query.loginname?this.$route.query.loginname:this.userInfo.loginname
+			ApiGet.userInfo.list(''+username,params).then(res=>{
 //				this.messageList = res.data.data;
 					res.data.data.create_at = Mate.getNumDate(new Date(res.data.data.create_at));
 				this.myuserInfo = res.data.data;

@@ -17,6 +17,11 @@ textarea{
     margin: 0;
     padding: 0;
 }
+textarea,
+input{
+    resize: none;
+    outline: none;
+}
 html{
     height: 100%;
 }

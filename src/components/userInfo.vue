@@ -4,7 +4,7 @@
 			<img :src="accesstoken?userInfo.avatar_url:'../../../static/pernode.jpg'" alt="" />
 			<p>{{accesstoken?userInfo.loginname:'游客'}}</p>
 		</div>
-		<div class="infoCon">
+		<div class="infoCon" v-if="userInfo.create_at">
 			<ul>
 				<li>积分:{{userInfo.score}}</li>
 				<li>注册时间:{{userInfo.create_at}}</li>

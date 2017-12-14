@@ -14,6 +14,10 @@
 		},
 		components:{
 			topicList:r=>require(['@/components/topicList'],r)
+		},
+		mounted(){
+			console.log(io('/sss'))
+			
 		}
 	}
 </script>
