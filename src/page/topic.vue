@@ -82,6 +82,8 @@
 			}
 		},
 		mounted(){
+			console.log(this.$refs.xky)
+			this.$refs.xky.style.color="#f00"
 			this.tabList.forEach((item,idx)=>{
 				if(item.id == this.mytab){
 					this.$store.commit('gettabIdx',idx)
